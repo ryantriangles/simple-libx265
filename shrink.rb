@@ -21,6 +21,10 @@ OptionParser.new do |opts|
     options[:offset] = offset
   end
 
+  opts.on('--dest destination', String, 'Destination folder') do |dest|
+    options[:dest] = dest
+  end
+
   opts.on('--preset preset', String, 'Preset') do |preset|
     options[:preset] = preset
   end
@@ -50,7 +54,7 @@ if options[:crf] and options[:bitrate] then
   exit
 end
 
-output_filename = options[:input].rpartition('.')[0] + "-shrunk.mp4"
+output_filename = options[:input].split('\\')[-1].rpartition('.')[0] + ".mp4"
 probe = `ffprobe -i "#{options[:input]}" 2>&1`
 preset = options[:preset] || "medium"
 
@@ -66,9 +70,9 @@ end
 
 
 if options[:crf] then
-  `ffmpeg -y #{offset} -i "#{options[:input]}" #{options[:res]} -c:v libx265 -preset #{preset} -x265-params crf=#{options[:crf]} -c:a copy #{options[:segment]} "k:\\red temp\\#{output_filename}"`
+  `ffmpeg -y #{offset} -i "#{options[:input]}" #{options[:res]} -c:v libx265 -preset #{preset} -x265-params crf=#{options[:crf]} -c:a copy #{options[:segment]} "#{options[:dest]}\\#{output_filename}"`
 end
 
 if options[:bitrate] then
-  `ffmpeg -y #{offset} -i "#{options[:input]} #{options[:res]} -c:v libx265 -preset #{preset} -x265-params -b:v #{options[:bitrate]}k -c:a copy #{options[:segment]} "k:\\red temp\\#{output_filename}"`
+  `ffmpeg -y #{offset} -i "#{options[:input]} #{options[:res]} -c:v libx265 -preset #{preset} -x265-params -b:v #{options[:bitrate]}k -c:a copy #{options[:segment]} "#{options[:dest]}\\#{output_filename}"`
 end

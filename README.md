@@ -6,12 +6,13 @@ simplified way to call ffmpeg's libx265 encoder.
 # Usage
 
 ```bash
-shrink.rb -i input.mp4 [options] output.mp4
+shrink.rb -i input.mp4 [options] --dest "mobile"
 ```
 
 # Options
 
 - `-i string`, input file (required)
+- `--dest string`, destination folder (required)
 - `--crf int`, a constant perceived quality
 - `--bitrate int`, desired kilobits per second
 - `--res string`, a resolution like `720p` or `1080p`
